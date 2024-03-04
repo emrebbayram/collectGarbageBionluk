@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d73261b77f5a4343a2be7a16b7303fa, type: 3}
+  m_Name: appleJuiceBox
+  m_EditorClassIdentifier: 
+  _obj: {fileID: 8580871828087541184, guid: dfd11b9d216b0164fbe55fcd71fe9ee7, type: 3}
+  _previewDistance: 3
+  _groundDistance: 0.5
+  _garbageType: 4

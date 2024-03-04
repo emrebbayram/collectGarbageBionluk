@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,8 +13,6 @@ public class inventory : MonoBehaviour
     private float colletDistance;
     [SerializeField]
     private LayerMask lootMask;
-
-
     [SerializeField]
     private List<item> items = new List<item>();
     [SerializeField]
@@ -22,6 +21,15 @@ public class inventory : MonoBehaviour
     private GameObject itemUIObj;
     [SerializeField]
     private Transform itemUIParent;
+    [SerializeField]
+    private Transform itemPreviewParent;
+    [SerializeField]
+    private GameObject viewCameraObj;
+    [SerializeField]
+    private RenderTexture[] renderTextures;
+    [SerializeField]
+    private Animator warningAnim;
+    private float warningEndTime;
     void Update()
     {
         RaycastHit hit;
@@ -50,13 +58,20 @@ public class inventory : MonoBehaviour
                         {
                             found = true;
                             items.RemoveAt(i);
+                            gameManager.Instance.point += gameManager.Instance.earnPoint;
+                            gameManager.Instance._gameEndTime += gameManager.Instance.timeEarnAmount;
                             break;
                         }
                     }
-                    showInventory();
                     if (!found)
                     {
-                        Debug.Log("Boþ");
+                        StartCoroutine(warningSend(3));
+                        gameManager.Instance.point -= gameManager.Instance.finePoint;
+                    }
+                    else
+                    {
+                        print(items.Count);
+                        showInventory();
                     }
                 }
             }
@@ -64,9 +79,13 @@ public class inventory : MonoBehaviour
     }
     public void showInventory()
     {
-        for (int i = 0; i < itemUIParent.childCount; i++)
+        foreach (Transform item in itemPreviewParent.transform)
         {
-            Destroy(itemUIParent.GetChild(0).gameObject);
+            DestroyImmediate(item.gameObject);
+        }
+        foreach (Transform item in itemUIParent.transform)
+        {
+            DestroyImmediate(item.gameObject);
         }
         List<item> itemsNew = new List<item>();
         List<int> itemsCount = new List<int>();
@@ -81,14 +100,47 @@ public class inventory : MonoBehaviour
                 itemsCount[itemsNew.IndexOf(items[i])] += 1;
             }
         }
+        foreach (Transform item in itemPreviewParent.transform)
+        {
+            DestroyImmediate(item.gameObject);
+        }
+        for (int i = 0; i < itemsNew.Count; i++)
+        {
+            GameObject viewObj = Instantiate(itemsNew[i].Object);
+            Vector3 newPos = new Vector3(1000 + i * 1000, 1000 + i * 1000, 1000 + i * 1000);
+            viewObj.transform.position = newPos;
+            GameObject viewCamera = Instantiate(viewCameraObj);
+            viewCamera.transform.position = newPos + new Vector3(itemsNew[i].PreviewDistance, 1, 0);
+            //viewCamera.transform.LookAt(viewObj.transform.position);
+            viewCamera.GetComponent<Camera>().targetTexture = renderTextures[i];
+            viewObj.AddComponent<rotateObj>();
+            viewObj.transform.parent = itemPreviewParent;
+            viewCamera.transform.parent = itemPreviewParent;
+        }
         for (int i = 0; i < itemsNew.Count; i++)
         {
             GameObject itemObj = Instantiate(itemUIObj);
-            itemObj.transform.parent = itemUIParent;
-            itemObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(100,-70 + (i * -180));
+            itemObj.transform.SetParent(itemUIParent);
+            itemObj.GetComponent<RectTransform>().anchoredPosition = new Vector2(60,-60 + (i * -90));
             itemObj.GetComponentInChildren<TextMeshProUGUI>().text = itemsCount[i].ToString() + "x";
-            itemObj.transform.GetChild(0).GetComponent<Image>().sprite = itemsNew[i].Image;
-
+            itemObj.transform.GetChild(0).GetComponent<RawImage>().texture = renderTextures[i];
         }
+    }
+    public IEnumerator warningSend(float duration)
+    {
+        if (warningEndTime <= Time.time)
+        {
+            warningAnim.SetTrigger("enter");
+            
+        }else
+        {
+            yield break;
+        }
+        warningEndTime = Mathf.Clamp(Time.time+warningEndTime + duration, 0, Time.time + warningEndTime + 5);
+        while (Time.time <= warningEndTime)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        warningAnim.SetTrigger("exit");
     }
 }

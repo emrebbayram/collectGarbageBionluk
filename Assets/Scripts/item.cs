@@ -17,13 +17,16 @@ public class item : ScriptableObject
     }
 
     [SerializeField]
-    private Sprite _image;
+    private GameObject _obj;
     [SerializeField]
-    private string _name;
+    private float _previewDistance = 5f;
+    [SerializeField]
+    private float _groundDistance = 1f;
     [SerializeField]
     private garbageType _garbageType;
 
-    public Sprite Image => _image;
-    public string Name => _name;
     public garbageType GarbageType => _garbageType;
+    public GameObject Object => _obj;
+    public float PreviewDistance => _previewDistance;
+    public float groundDistance => _groundDistance;
 }

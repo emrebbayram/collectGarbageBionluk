@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d73261b77f5a4343a2be7a16b7303fa, type: 3}
   m_Name: crushedWaterBottle
   m_EditorClassIdentifier: 
-  _image: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  _name: curshed bottle water
+  _obj: {fileID: 5356951897206060445, guid: 77b327aa538ce2c4b8d74badd2d1798e, type: 3}
+  _previewDistance: 5
+  _groundDistance: 0.5
   _garbageType: 1

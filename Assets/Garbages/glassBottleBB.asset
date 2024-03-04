@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d73261b77f5a4343a2be7a16b7303fa, type: 3}
+  m_Name: glassBottleBB
+  m_EditorClassIdentifier: 
+  _obj: {fileID: 6188555864924431349, guid: 0f690f39c32a64c4fa010f40aacca07a, type: 3}
+  _previewDistance: 5
+  _groundDistance: 0.5
+  _garbageType: 2
