@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _obj: {fileID: 5852885053897544787, guid: 9e4dc2c2ddae8a941880dca82d474239, type: 3}
   _previewDistance: 5
-  _groundDistance: 0.6
+  _groundDistance: 0.7
   _garbageType: 4

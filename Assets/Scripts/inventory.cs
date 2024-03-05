@@ -30,6 +30,14 @@ public class inventory : MonoBehaviour
     [SerializeField]
     private Animator warningAnim;
     private float warningEndTime;
+    [SerializeField]
+    private RectTransform inputShowObj;
+
+    private Canvas mainCanvas;
+    private void Start()
+    {
+        mainCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+    }
     void Update()
     {
         RaycastHit hit;
@@ -39,16 +47,21 @@ public class inventory : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    if (items.Count < inventoryLimit) {
+                    if (items.Count < inventoryLimit)
+                    {
                         items.Add(hit.collider.gameObject.GetComponent<itemObj>().item);
                         Destroy(hit.collider.gameObject);
                         showInventory();
-                    }else
+                    }
+                    else
                     {
                         //Envanter dolu
                     }
                 }
-            }else if (hit.collider.gameObject.tag == "bin"){
+                showIndicator(hit);
+            }
+            else if (hit.collider.gameObject.tag == "bin")
+            {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
                     bool found = false;
@@ -74,8 +87,22 @@ public class inventory : MonoBehaviour
                         showInventory();
                     }
                 }
+                showIndicator(hit);
             }
+            
         }
+        else
+        {
+            inputShowObj.anchoredPosition = new Vector2(99999, 99999);
+        }
+    }
+    public void showIndicator(RaycastHit hit)
+    {
+        Vector2 positionOnScreen = mainCamera.WorldToScreenPoint(hit.collider.gameObject.transform.position);
+        float scaleFactor = mainCanvas.scaleFactor;
+        Vector2 finalPosition = new Vector2(positionOnScreen.x / scaleFactor, positionOnScreen.y / scaleFactor) - (new Vector2(Screen.width, Screen.height) / 2);
+
+        inputShowObj.anchoredPosition = finalPosition;
     }
     public void showInventory()
     {
