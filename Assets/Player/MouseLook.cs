@@ -10,6 +10,7 @@ public class MouseLook : MonoBehaviour
     float xRotation = 0f;
     void Start()
     {
+        mouseSensivity = PlayerPrefs.GetFloat("sensivity", 1000);
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -25,5 +26,9 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(xRotation,0f,0f);
 
         playerBody.Rotate(Vector3.up * mouseX);
+    }
+    public void changeSensivity(float sensivity)
+    {
+        mouseSensivity = sensivity;
     }
 }

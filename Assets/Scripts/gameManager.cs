@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Windows;
 
 public class gameManager : MonoBehaviour
 {
@@ -35,6 +37,15 @@ public class gameManager : MonoBehaviour
     private GameObject endUI;
     [SerializeField]
     private GameObject inGameUI;
+    [SerializeField]
+    private GameObject pauseUI;
+    [SerializeField]
+    private Slider mouseSensivitySlider;
+    [SerializeField] private TextMeshProUGUI mouseSensivityText;
+    [SerializeField]
+    private bool paused;
+
+    private MouseLook _mouseLook;
 
 
     public static gameManager Instance => _instance;
@@ -47,6 +58,12 @@ public class gameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
+    private void Start()
+    {
+        _mouseLook = GetComponentInChildren<MouseLook>();
+        mouseSensivitySlider.value = PlayerPrefs.GetFloat("sensivity", 1000);
+        mouseSensivityText.text = mouseSensivitySlider.value.ToString();
+    }
     private void Update()
     {
         if (_gameEndTime != Mathf.Infinity)
@@ -65,6 +82,31 @@ public class gameManager : MonoBehaviour
             _gameEndTime = Mathf.Infinity;
             endGame();
         }
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+        {
+            paused = !paused;
+            pauseGameManager();
+        }
+    }
+    public void pauseGameManager()
+    {
+        pauseUI.SetActive(paused);
+        inGameUI.SetActive(!paused);
+        if (paused)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Time.timeScale = 0;
+        }else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Time.timeScale = 1;
+        }
+    }
+    public void sensivityChange()
+    {
+        PlayerPrefs.SetFloat("sensivity", mouseSensivitySlider.value);
+        mouseSensivityText.text = mouseSensivitySlider.value.ToString();
+        _mouseLook.changeSensivity(mouseSensivitySlider.value);
     }
     public void trashSpawn()
     {
