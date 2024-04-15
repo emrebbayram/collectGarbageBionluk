@@ -44,6 +44,8 @@ public class gameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI mouseSensivityText;
     [SerializeField]
     private bool paused;
+    [SerializeField]
+    private TextMeshProUGUI endGamePointText;
 
     private MouseLook _mouseLook;
 
@@ -124,8 +126,14 @@ public class gameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 0;
+        endGamePointText.text = "Puan : " + point.ToString();
         endUI.gameObject.SetActive(true);
         inGameUI.SetActive(false);
+        int scoreCount = PlayerPrefs.GetInt("scoreCount",0);
+        string _name = PlayerPrefs.GetString("currentName");
+        PlayerPrefs.SetInt("score"+scoreCount.ToString(),point);
+        PlayerPrefs.SetString("scoreName" + scoreCount.ToString(), _name);
+        PlayerPrefs.SetInt("scoreCount", scoreCount + 1);
     }
     public void restartGameClick()
     {

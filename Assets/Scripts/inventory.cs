@@ -73,6 +73,7 @@ public class inventory : MonoBehaviour
                             items.RemoveAt(i);
                             gameManager.Instance.point += gameManager.Instance.earnPoint;
                             gameManager.Instance._gameEndTime += gameManager.Instance.timeEarnAmount;
+                            showInventory();
                             break;
                         }
                     }
