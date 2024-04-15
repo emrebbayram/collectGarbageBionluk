@@ -110,7 +110,7 @@ public class gameManager : MonoBehaviour
     }
     public void trashSpawn()
     {
-        Vector3 spawnPos = new Vector3(Random.Range(-44f,54f),10f,Random.Range(-45,92));
+        Vector3 spawnPos = new Vector3(Random.Range(-145f,54f),10f,Random.Range(-45,92));
         RaycastHit hit;
         if (Physics.Raycast(spawnPos,Vector3.down, out hit, 500f, groundLayer))
         {
